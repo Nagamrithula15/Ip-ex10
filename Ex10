@@ -1,0 +1,139 @@
+-->factorial
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Factorial Calculator</title>
+</head>
+<body>
+
+<h2>Factorial Calculator</h2>
+
+<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+    <label for="number">Enter a number:</label>
+    <input type="number" id="number" name="number" required>
+    <input type="submit" value="Calculate Factorial">
+</form>
+
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $number = $_POST['number'];
+
+    if ($number < 0) {
+        echo "Factorial is not defined for negative numbers.";
+    } elseif ($number == 0) {
+        echo "The factorial of 0 is 1.";
+    } else {
+        $factorial = 1;
+        for ($i = 1; $i <= $number; $i++) {
+            $factorial *= $i;
+        }
+        echo "The factorial of $number is $factorial.";
+    }
+}
+?>
+
+</body>
+</html>
+
+-->temperature conversion 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Temperature Converter</title>
+</head>
+<body>
+
+<h2>Temperature Converter</h2>
+
+<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+    <label for="temperature">Enter temperature:</label>
+    <input type="text" id="temperature" name="temperature" required>
+    <select name="unit">
+        <option value="celsius">Celsius</option>
+        <option value="fahrenheit">Fahrenheit</option>
+    </select>
+    <input type="submit" value="Convert">
+</form>
+
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $temperature = $_POST['temperature'];
+    $unit = $_POST['unit'];
+
+    if ($unit == 'celsius') {
+        $fahrenheit = ($temperature * 9/5) + 32;
+        echo "$temperature Celsius is equal to $fahrenheit Fahrenheit.";
+    } elseif ($unit == 'fahrenheit') {
+        $celsius = ($temperature - 32) * 5/9;
+        echo "$temperature Fahrenheit is equal to $celsius Celsius.";
+    }
+}
+?>
+
+
+-->bank account 
+</body>
+</html>
+
+<?php
+
+class BankAccount {
+    private $balance;
+    
+    public function __construct($initialBalance = 0) {
+        $this->balance = $initialBalance;
+    }
+    
+    public function deposit($amount) {
+        if ($amount > 0) {
+            $this->balance += $amount;
+            return true;
+        } else {
+            return false; // Deposit amount must be positive
+        }
+    }
+    
+    public function withdraw($amount) {
+        if ($amount > 0 && $this->balance >= $amount) {
+            $this->balance -= $amount;
+            return true;
+        } else {
+            return false; // Withdrawal amount must be positive and not exceed balance
+        }
+    }
+    
+    public function checkBalance() {
+        return $this->balance;
+    }
+}
+
+class Customer {
+    private $name;
+    private $bankAccount;
+    
+    public function __construct($name, $initialBalance = 0) {
+        $this->name = $name;
+        $this->bankAccount = new BankAccount($initialBalance);
+    }
+    
+    public function getName() {
+        return $this->name;
+    }
+    
+    public function depositFunds($amount) {
+        return $this->bankAccount->deposit($amount);
+    }
+    
+    public function withdrawFunds($amount) {
+        return $this->bankAccount->withdraw($amount);
+    }
+    
+    public function checkBalance() {
+        return $this->bankAccount->checkBalance();
+    }
+}
+$customer = new Customer("John Doe", 1000);
+$customer->depositFunds(500);
+$customer->withdrawFunds(200);
+echo $customer->getName() . "'s balance: $" . $customer->checkBalance();
+?>
